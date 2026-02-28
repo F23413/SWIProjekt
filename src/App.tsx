@@ -1,10 +1,11 @@
 import './App.css'
+import Header from "./pages/header/Header.tsx";
 
 function App() {
   return (
-    <h1 className="text-center border">
-        Hello, beautiful.
-    </h1>
+    <>
+        <Header />
+    </>
   )
 }
 
