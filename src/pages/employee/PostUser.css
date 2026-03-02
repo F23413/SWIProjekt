@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 90vh;
+    height: 91vh;
 }
 
 .center-form Form{
@@ -22,13 +22,9 @@
     padding: 10px;
 }
 
-body{
+.PostUser{
     background-image: url("https://vignette.wikia.nocookie.net/freddy-fazbears-pizza/images/a/a5/Puppetlookingatyou.gif/revision/latest?cb=20150402180052");
     background-repeat: no-repeat;
     background-position-x: center;
-    background-size: 1500px;
-}
-
-.bg-dark {
-    opacity: 85%;
+    background-size: 900px;
 }
