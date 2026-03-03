@@ -5,10 +5,10 @@ import {Button, Form} from "react-bootstrap";
 
 const PostUser = () => {
     const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        phone: "",
-        department: ""
+        name: "bob",
+        email: "dan@mama.com",
+        phone: "007",
+        department: "www"
     })
     // event má implicitně typ any, noImplicitAny: true je chyba
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event)=> {
