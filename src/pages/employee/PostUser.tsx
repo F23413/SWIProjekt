@@ -65,7 +65,7 @@ const PostUser = () => {
                     <Form.Control type="number" name="phone" placeholder="Tel. číslo" value={formData.phone} onChange={handleInputChange}></Form.Control>
                     <Form.Control type="text" name="department" placeholder="Oddělení" value={formData.department} onChange={handleInputChange}></Form.Control>
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100">
+                <Button variant="success" type="submit" className="w-100">
                     Uložit nového zaměstnance
                 </Button>
             </Form>

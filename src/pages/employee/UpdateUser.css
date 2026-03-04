@@ -1,0 +1,30 @@
+.center-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 91vh;
+}
+
+.center-form Form{
+    max-width: 400px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid lightgray;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.center-form Form .form-control{
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+.PostUser{
+    background-image: url("https://www.bing.com/th/id/OGC.206251dcefb195404ca634ac0827143c?o=7&pid=1.7&rm=3&rurl=https%3a%2f%2fmedia.tenor.com%2fsChasIFUr30AAAAM%2ffnaf-fnaf-memes.gif&ehk=xl7QOwrhm63IM%2fF1%2f%2bcwWke%2f2TYOu8p1R5dPSIVj%2b0c%3d");
+    background-repeat: repeat;
+    background-position-x: center;
+    background-size: 400px;
+}

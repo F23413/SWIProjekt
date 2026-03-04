@@ -1,5 +1,7 @@
 import {useEffect, useState} from "react";
 import {Button, Col, Container, Row, Table} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
+
 
 type Employee = {
     id: number;
@@ -12,6 +14,7 @@ type Employee = {
 const Dashboard = () => {
 
     const [employees, setEmployees] = useState<Employee[]>([]);
+    const navigate = useNavigate();
 
     /*useEffect(() => {
         const fetchEmployees = async () =>{
@@ -75,6 +78,10 @@ const Dashboard = () => {
         console.log(`Zaměstnanec s ID: ${employeeId} byl odstraněn`);
     };
 
+    const handleUpdate = (employeeId: number) => {
+        navigate(`/employee/${employeeId}`);
+    }
+
     return (
         <>
             <Container className="mt-5">
@@ -99,7 +106,7 @@ const Dashboard = () => {
                                     <td>{employee.phone}</td>
                                     <td>{employee.department}</td>
                                     <td className="gap-1 d-flex">
-                                    <Button variant="outline-success">Aktualizovat</Button>
+                                    <Button variant="outline-primary" onClick={()=>handleUpdate(employee.id)}>Upravit</Button>
                                     <Button variant="outline-danger" onClick={()=>handleDelete(employee.id)}>Odstranit</Button>
                                     </td>
                                 </tr>
