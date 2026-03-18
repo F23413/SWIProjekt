@@ -1,5 +1,6 @@
 package cz.osu.swi.employeemanagement.controller;
 
+import cz.osu.swi.employeemanagement.dto.EmployeeView;
 import cz.osu.swi.employeemanagement.entity.Employee;
 import cz.osu.swi.employeemanagement.service.EmployeeService;
 import jakarta.persistence.EntityNotFoundException;
@@ -23,7 +24,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee")
-    public List<Employee> getEmployees() {
+    public List<EmployeeView> getEmployees() {
         return employeeService.getEmployees();
     }
 
@@ -41,7 +42,7 @@ public class EmployeeController {
     @GetMapping("/employee/{id}")
     public ResponseEntity<?> updateEmployee(@PathVariable Long id) {
 
-        Employee employee = employeeService.getEmployeeByID(id);
+        EmployeeView employee = employeeService.getEmployeeByID(id);
         if (employee == null) {
             return ResponseEntity.notFound().build();
         }

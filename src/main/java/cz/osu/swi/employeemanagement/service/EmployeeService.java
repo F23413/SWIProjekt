@@ -1,5 +1,6 @@
 package cz.osu.swi.employeemanagement.service;
 
+import cz.osu.swi.employeemanagement.dto.EmployeeView;
 import cz.osu.swi.employeemanagement.entity.Employee;
 import cz.osu.swi.employeemanagement.repository.EmployeeRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,8 +20,11 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
+    public List<EmployeeView> getEmployees() {
+        return employeeRepository.findAllWithLogin()
+                .stream()
+                .map(this::toView)
+                .toList();
     }
 
     public void deleteEmployee(Long id) {
@@ -31,16 +35,16 @@ public class EmployeeService {
         employeeRepository.deleteById(id);
     }
 
-    public Employee getEmployeeByID(Long id) {
-
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeView getEmployeeByID(Long id) {
+        return employeeRepository.findByIdWithLogin(id)
+                .map(this::toView)
+                .orElse(null);
     }
 
     public Employee updateEmployee(Long id, Employee employee) {
         Optional<Employee> employeeOptional = employeeRepository.findById(id);
         if(employeeOptional.isPresent()){
             Employee existingEmployee = employeeOptional.get();
-            existingEmployee.setEmail(employee.getEmail());
             existingEmployee.setName(employee.getName());
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDepartment(employee.getDepartment());
@@ -48,6 +52,16 @@ public class EmployeeService {
             return employeeRepository.save(existingEmployee);
         }
         return null;
+    }
+
+    private EmployeeView toView(Employee employee) {
+        return new EmployeeView(
+                employee.getId(),
+                employee.getName(),
+                employee.getPhone(),
+                employee.getDepartment(),
+                employee.getLogin().getEmail()
+        );
     }
 
 }
