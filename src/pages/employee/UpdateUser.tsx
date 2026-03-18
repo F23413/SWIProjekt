@@ -2,6 +2,8 @@ import './UpdateUser.css';
 import {useEffect, useState} from "react";
 import {Button, FloatingLabel, Form} from "react-bootstrap";
 import {useParams, useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSave} from "@fortawesome/free-solid-svg-icons";
 
 const UpdateUser = ()=>{
     const {id} = useParams();
@@ -59,7 +61,7 @@ const UpdateUser = ()=>{
 
     return(
         <>
-            <div className="PostUser">
+            <div className="UpdateUser">
                 <div className="center-form">
                     <div className="card border-primary text-white mb-3">
                         <div className=" bg-primary card-header">
@@ -118,8 +120,8 @@ const UpdateUser = ()=>{
                                     >
                                         Zpět
                                     </Button>
-                                    <Button variant="primary" type="submit" className="w-100">
-                                        Uložit změny
+                                    <Button variant="primary" type="submit" className="w-100 text-nowrap">
+                                        <FontAwesomeIcon icon={faSave} /> Uložit změny
                                     </Button>
                                 </div>
 

@@ -2,6 +2,8 @@ import "./PostUser.css"
 import {useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSave} from "@fortawesome/free-solid-svg-icons";
 
 const PostUser = () => {
 
@@ -55,9 +57,9 @@ const PostUser = () => {
         <>
             <div className="PostUser">
 <div className="center-form">
-    <div className="card">
-        <div className="card-header">
-            <h3 className=" text-primary-emphasis">Přidání nového zaměstnance</h3>
+    <div className="card border-success text-white mb-3">
+        <div className="card-header bg-success">
+            <h3 className="">Přidání nového zaměstnance</h3>
         </div>
         <div className="card-body">
             <Form onSubmit={handleSubmit}>
@@ -68,7 +70,7 @@ const PostUser = () => {
                     <Form.Control type="text" name="department" placeholder="Oddělení" value={formData.department} onChange={handleInputChange}></Form.Control>
                 </Form.Group>
                 <Button variant="success" type="submit" className="w-100">
-                    Uložit nového zaměstnance
+                    <FontAwesomeIcon icon={faSave} /> Uložit nového zaměstnance
                 </Button>
             </Form>
         </div>
