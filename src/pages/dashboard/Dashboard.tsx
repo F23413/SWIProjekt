@@ -16,43 +16,18 @@ const Dashboard = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
     const navigate = useNavigate();
 
-    /*useEffect(() => {
+    useEffect(() => {
         const fetchEmployees = async () =>{
             try{
-                const response = await fetch("http://localhost:8080/api/employees");
+                const response = await fetch("http://localhost:8080/api/employee");
                 const data = await response.json();
                 setEmployees(data);
             }catch(error){
                 console.error("Chyba při hledání zaměstnanců: ", error);
-            }}fetchEmployees();
-    }, [])*/
-
-    useEffect(() => {
-        const fetchEmployees = async () => {
-            const staticData: Employee[] = [
-                {
-                    id: 1,
-                    name: "bob",
-                    email: "dan@mama.com",
-                    phone: "007",
-                    department: "www"
-                },
-                {
-                    id: 2,
-                    name: "Pavel Suk",
-                    email: "pavel.suk@wisnet.cz",
-                    phone: "777738110",
-                    department: "Wisnet"
-                }
-            ];
-
-            setEmployees(staticData);
-        };
-
+            }}
         fetchEmployees();
-    }, []);
-
-    /*const handleDelete = async (employeeId: number)=>{
+    }, [])
+    const handleDelete = async (employeeId: number)=>{
         try{
             const response = await fetch(`http://localhost:8080/api/employee/${employeeId}`,{
                 method: "DELETE"
@@ -68,16 +43,7 @@ const Dashboard = () => {
         }catch(error){
             console.error("Nastala chyba s odstraňováním: ",error);
         }
-    }*/
-
-    const handleDelete = (employeeId: number) => {
-        setEmployees(prevEmployees =>
-            prevEmployees.filter(emp => emp.id !== employeeId)
-        );
-
-        console.log(`Zaměstnanec s ID: ${employeeId} byl odstraněn`);
-    };
-
+    }
     const handleUpdate = (employeeId: number) => {
         navigate(`/employee/${employeeId}`);
     }

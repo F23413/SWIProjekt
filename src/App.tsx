@@ -5,6 +5,7 @@ import Dashboard from "./pages/dashboard/Dashboard.tsx";
 import NoMatch from "./pages/noMatch/NoMatch.tsx";
 import PostUser from "./pages/employee/PostUser.tsx";
 import UpdateUser from "./pages/employee/UpdateUser.tsx";
+import Login from "./pages/login/Login.tsx";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Route path="/employee" element={<PostUser/>}></Route>
             <Route path="/employee/:id" element={<UpdateUser/>}></Route>
             <Route path="*" element={<NoMatch/>}></Route>
+            <Route path="/login" element={<Login/>}></Route>
         </Routes>
     </>
   );

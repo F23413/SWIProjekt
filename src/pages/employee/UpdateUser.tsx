@@ -22,18 +22,8 @@ const UpdateUser = ()=>{
         })
     }
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
-        event.preventDefault(); // zabrání refreshi stránky
-
-        console.log("Ukládám data:", formData);
-
-        // tady by bylo API volání, ale pro statická data jen logujeme
-
-        navigate("/"); // přesměrování na hlavní stránku
-    };
-
     useEffect(() => {
-        /*
+
         const fetchEmployee = async () =>{
             try{
             const response = await fetch(`http://localhost:8080/api/employee/${id}`);
@@ -43,20 +33,29 @@ const UpdateUser = ()=>{
             catch(error){
                 console.error("Chyba při načtení uživatele: ", error);
             }
-        }fetchEmployee();
-         */
-        const fetchEmployee = async () =>{
-            try{
-                const response = await fetch(`http://localhost:8080/api/employee/${id}`);
-                const data = await response.json();
-                setFormData(data);
-            }
-            catch(error){
-                console.error("Chyba při načtení uživatele: ", error);
-            }
         }
         fetchEmployee();
     }, [id])
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try{
+            const response = await fetch(`http://localhost:8080/api/employee/${id}`,{
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const data = await response.json();
+            console.log("Upravená data: ", data);
+
+            navigate("/");
+        }catch(error){
+            console.error("Chyba při načítání uživatele: ", error);
+        }
+    }
 
     return(
         <>
@@ -111,7 +110,12 @@ const UpdateUser = ()=>{
 
                                 </Form.Group>
                                 <div className=" d-flex justify-content-between gap-2">
-                                    <Button variant="secondary" type="submit" className="w-100">
+                                    <Button
+                                        variant="secondary"
+                                        type="button"
+                                        className="w-100"
+                                        onClick={() => navigate("/")}
+                                    >
                                         Zpět
                                     </Button>
                                     <Button variant="primary" type="submit" className="w-100">

@@ -11,6 +11,7 @@ const Header = () => {
         <Nav className="ml-auto">
             <Nav.Link as={Link} to="/" className="nav-link text-light">Zaměstnanci</Nav.Link>
             <Nav.Link as={Link} to="/employee" className="nav-link text-light">Nový zaměstnanec</Nav.Link>
+            <Nav.Link as={Link} to="/login" className="nav-link text-light">Login</Nav.Link>
         </Nav>
     </Container>
 </Navbar>

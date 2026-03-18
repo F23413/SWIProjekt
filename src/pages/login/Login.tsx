@@ -1,9 +1,12 @@
-import "./PostUser.css"
+import "./Login.css";
 import {useState} from "react";
 import {Button, Form} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
+import { faCapricorn } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-const PostUser = () => {
+
+const Login = () => {
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -53,29 +56,27 @@ const PostUser = () => {
 
     return(
         <>
-            <div className="PostUser">
-<div className="center-form">
-    <div className="card">
-        <div className="card-header">
-            <h3 className=" text-primary-emphasis">Přidání nového zaměstnance</h3>
-        </div>
-        <div className="card-body">
-            <Form onSubmit={handleSubmit}>
-                <Form.Group controlId="formBasicName">
-                    <Form.Control type="text" name="name" placeholder="Jméno" value={formData.name} onChange={handleInputChange}></Form.Control>
-                    <Form.Control type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange}></Form.Control>
-                    <Form.Control type="number" name="phone" placeholder="Tel. číslo" value={formData.phone} onChange={handleInputChange}></Form.Control>
-                    <Form.Control type="text" name="department" placeholder="Oddělení" value={formData.department} onChange={handleInputChange}></Form.Control>
-                </Form.Group>
-                <Button variant="success" type="submit" className="w-100">
-                    Uložit nového zaměstnance
-                </Button>
-            </Form>
-        </div>
-    </div>
-</div>
+            <div className="Login">
+                <div className="center-form">
+                    <div className="card">
+                        <div className="card-header">
+                            <h3 className=" text-primary-emphasis">Přihlášení</h3>
+                        </div>
+                        <div className="card-body">
+                            <Form onSubmit={handleSubmit}>
+                                <Form.Group controlId="formBasicName">
+                                    <Form.Control type="email" name="email" placeholder="Email" value={formData.email} onChange={handleInputChange}></Form.Control>
+                                    <Form.Control type="text" name="password" placeholder="Heslo" value={formData.department} onChange={handleInputChange}></Form.Control>
+                                </Form.Group>
+                                <Button variant="success" type="submit" className="w-100">
+                                    Přihlásit <FontAwesomeIcon icon={faCapricorn} />
+                                </Button>
+                            </Form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )
 }
-export default PostUser;
+export default Login;
