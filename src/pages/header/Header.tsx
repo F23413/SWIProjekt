@@ -13,9 +13,9 @@ const Header = ({authState, onLogout}: HeaderProps) => {
         <>
             <Navbar bg="primary" variant="dark">
                 <Container>
-                    <Navbar.Brand href="/"><strong>Systém pro správu zaměstnanců</strong></Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/"><strong>Systém pro správu zaměstnanců</strong></Navbar.Brand>
                     <Nav className="ml-auto">
-                        <Nav.Link as={Link} to="/" className="nav-link text-light">Zaměstnanci</Nav.Link>
+                        <Nav.Link as={Link} to="/dashboard" className="nav-link text-light">Dashboard</Nav.Link>
                         {authState.role === "ADM" && (
                             <Nav.Link as={Link} to="/employee" className="nav-link text-light">Nový zaměstnanec</Nav.Link>
                         )}

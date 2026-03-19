@@ -53,7 +53,7 @@ const UpdateUser = ()=>{
             const data = await response.json();
             console.log("Upravená data: ", data);
 
-            navigate("/");
+            navigate("/dashboard");
         }catch(error){
             console.error("Chyba při načítání uživatele: ", error);
         }
@@ -116,7 +116,7 @@ const UpdateUser = ()=>{
                                         variant="secondary"
                                         type="button"
                                         className="w-100"
-                                        onClick={() => navigate("/")}
+                                        onClick={() => navigate("/dashboard")}
                                     >
                                         Zpět
                                     </Button>

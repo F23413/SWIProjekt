@@ -45,7 +45,7 @@ const PostUser = () => {
 
             const data = await response.json();
             console.log("Uživatel uložen: ", data);
-            navigate("/");
+            navigate("/dashboard");
 
         } catch (error) {
             console.error("Došlo k chybě: ", error);

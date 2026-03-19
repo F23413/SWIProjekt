@@ -23,7 +23,9 @@
 }
 
 .UpdateUser{
-    background-image: url("https://www.bing.com/th/id/OGC.206251dcefb195404ca634ac0827143c?o=7&pid=1.7&rm=3&rurl=https%3a%2f%2fmedia.tenor.com%2fsChasIFUr30AAAAM%2ffnaf-fnaf-memes.gif&ehk=xl7QOwrhm63IM%2fF1%2f%2bcwWke%2f2TYOu8p1R5dPSIVj%2b0c%3d");
+    background-image:
+            linear-gradient(rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.94)),
+            url("https://www.bing.com/th/id/OGC.206251dcefb195404ca634ac0827143c?o=7&pid=1.7&rm=3&rurl=https%3a%2f%2fmedia.tenor.com%2fsChasIFUr30AAAAM%2ffnaf-fnaf-memes.gif&ehk=xl7QOwrhm63IM%2fF1%2f%2bcwWke%2f2TYOu8p1R5dPSIVj%2b0c%3d");
     background-repeat: repeat;
     background-position-x: center;
     background-size: 400px;

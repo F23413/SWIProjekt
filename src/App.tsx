@@ -7,6 +7,7 @@ import NoMatch from "./pages/noMatch/NoMatch.tsx";
 import PostUser from "./pages/employee/PostUser.tsx";
 import UpdateUser from "./pages/employee/UpdateUser.tsx";
 import Login from "./pages/login/Login.tsx";
+import Home from "./pages/home/Home.tsx";
 import {AUTH_STORAGE_KEY, defaultAuthState} from "./auth.ts";
 import type {AuthState} from "./auth.ts";
 
@@ -42,13 +43,14 @@ function App() {
 
         <Header authState={authState} onLogout={() => setAuthState(defaultAuthState)} />
         <Routes >
-            <Route path="/" element={<Dashboard isLoggedIn={authState.isLoggedIn} role={authState.role} />}></Route>
+            <Route path="/" element={<Home/>}></Route>
+            <Route path="/dashboard" element={<Dashboard isLoggedIn={authState.isLoggedIn} role={authState.role} />}></Route>
             <Route
                 path="/employee"
                 element={
                     authState.isLoggedIn && authState.role === "ADM"
                         ? <PostUser />
-                        : <Navigate to={authState.isLoggedIn ? "/" : "/login"} replace />
+                        : <Navigate to={authState.isLoggedIn ? "/dashboard" : "/login"} replace />
                 }
             ></Route>
             <Route
@@ -56,7 +58,7 @@ function App() {
                 element={
                     authState.isLoggedIn && authState.role === "ADM"
                         ? <UpdateUser />
-                        : <Navigate to={authState.isLoggedIn ? "/" : "/login"} replace />
+                        : <Navigate to={authState.isLoggedIn ? "/dashboard" : "/login"} replace />
                 }
             ></Route>
             <Route path="*" element={<NoMatch/>}></Route>

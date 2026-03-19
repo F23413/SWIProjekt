@@ -22,7 +22,9 @@
     padding: 10px;
 }
 .PostUser{
-    background-image: url("https://vignette.wikia.nocookie.net/freddy-fazbears-pizza/images/a/a5/Puppetlookingatyou.gif/revision/latest?cb=20150402180052");
+    background-image:
+            linear-gradient(rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.94)),
+            url("https://vignette.wikia.nocookie.net/freddy-fazbears-pizza/images/a/a5/Puppetlookingatyou.gif/revision/latest?cb=20150402180052");
     background-repeat: no-repeat;
     background-position-x: center;
     background-size: 900px;

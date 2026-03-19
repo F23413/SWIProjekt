@@ -68,7 +68,7 @@ const Login = ({authState, onLogin}: LoginProps) => {
                 role
             });
 
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             console.error("Došlo k chybe: ", error);
             setErrorMessage(error instanceof Error ? error.message : "Přihlášení se nezdařilo");
