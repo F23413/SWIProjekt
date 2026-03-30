@@ -11,14 +11,10 @@ type ReservationProps = {
 
 type ReservationRecord = {
     id: number;
-    roomName?: string;
-    room_name?: string;
-    bookStart?: string;
-    book_start?: string;
-    bookEnd?: string;
-    book_end?: string;
-    employeeId?: number;
-    employee_id?: number;
+    roomName: string;
+    bookStart: string;
+    bookEnd: string;
+    employeeId: number;
 };
 
 type EmployeeRecord = {
@@ -53,11 +49,11 @@ const formatReservationDate = (value: string) => {
 
 const normalizeRoomName = (value: string) => value.trim().toLowerCase();
 
-const getReservationRoomName = (reservation: ReservationRecord) => reservation.roomName ?? reservation.room_name ?? "";
+const getReservationRoomName = (reservation: ReservationRecord) => reservation.roomName ?? "";
 
-const getReservationBookStart = (reservation: ReservationRecord) => reservation.bookStart ?? reservation.book_start ?? "";
+const getReservationBookStart = (reservation: ReservationRecord) => reservation.bookStart ?? "";
 
-const getReservationBookEnd = (reservation: ReservationRecord) => reservation.bookEnd ?? reservation.book_end ?? "";
+const getReservationBookEnd = (reservation: ReservationRecord) => reservation.bookEnd ?? "";
 
 const hasOverlap = (candidateStart: string, candidateEnd: string, reservation: ReservationRecord) => {
     const start = new Date(candidateStart).getTime();
