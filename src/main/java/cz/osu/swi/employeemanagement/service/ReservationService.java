@@ -65,4 +65,12 @@ public class ReservationService {
     public List<Reservation> getReservations() {
         return reservationRepository.findAll();
     }
+
+    public void deleteReservation(Long id) {
+        if (!reservationRepository.existsById(id)) {
+            throw new EntityNotFoundException("Reservation with id " + id + " not found");
+        }
+
+        reservationRepository.deleteById(id);
+    }
 }
