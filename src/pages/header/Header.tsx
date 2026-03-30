@@ -14,7 +14,7 @@ const Header = ({authState, onLogout}: HeaderProps) => {
             <Navbar bg="primary" variant="dark">
                 <Container>
                     <Navbar.Brand as={Link} to="/">
-                        <strong>System pro spravu zamestnancu</strong>
+                        <strong>Systém pro správu zaměstnanců</strong>
                     </Navbar.Brand>
                     <Nav className="ml-auto">
                         <Nav.Link as={Link} to="/dashboard" className="nav-link text-light">
@@ -22,12 +22,12 @@ const Header = ({authState, onLogout}: HeaderProps) => {
                         </Nav.Link>
                         {authState.isLoggedIn && (
                             <Nav.Link as={Link} to="/reservation" className="nav-link text-light">
-                                Rezervace
+                                Rezervace místnosti
                             </Nav.Link>
                         )}
                         {authState.role === "ADM" && (
                             <Nav.Link as={Link} to="/employee" className="nav-link text-light">
-                                Novy zamestnanec
+                                Nový zaměstnanec
                             </Nav.Link>
                         )}
                         {!authState.isLoggedIn && (

@@ -76,6 +76,7 @@ const Reservation = ({authState}: ReservationProps) => {
     const [feedback, setFeedback] = useState<{message: string; variant: "success" | "danger" | "warning"} | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [deletingReservationId, setDeletingReservationId] = useState<number | null>(null);
 
     useEffect(() => {
         const resolveEmployeeId = async () => {
@@ -86,14 +87,14 @@ const Reservation = ({authState}: ReservationProps) => {
             const employeeResponse = await fetch(`${API_BASE_URL}/employee`);
 
             if (!employeeResponse.ok) {
-                throw new Error("Nepodarilo se nacist seznam zamestnancu.");
+                throw new Error("Nepodařilo se načíst seznam zaměstnanců.");
             }
 
             const employees: EmployeeRecord[] = await employeeResponse.json();
             const matchingEmployee = employees.find((employee) => employee.email === authState.email);
 
             if (!matchingEmployee) {
-                throw new Error("K prihlasenemu uctu se nepodarilo dohledat zamestnance.");
+                throw new Error("K přihlášenému účtu se nepodařilo dohledat zaměstnance.");
             }
 
             return matchingEmployee.id;
@@ -118,7 +119,7 @@ const Reservation = ({authState}: ReservationProps) => {
                 ]);
 
                 if (!allResponse.ok || !userResponse.ok) {
-                    throw new Error("Nepodarilo se nacist rezervace.");
+                    throw new Error("Nepodařilo se načíst rezervace.");
                 }
 
                 const [allData, userData] = await Promise.all([
@@ -129,9 +130,9 @@ const Reservation = ({authState}: ReservationProps) => {
                 setAllReservations(allData);
                 setUserReservations(userData);
             } catch (error) {
-                console.error("Chyba pri nacitani rezervaci:", error);
+                console.error("Chyba při načítání rezervací:", error);
                 setFeedback({
-                    message: error instanceof Error ? error.message : "Nepodarilo se nacist rezervace.",
+                    message: error instanceof Error ? error.message : "Nepodařilo se načíst rezervace.",
                     variant: "danger"
                 });
             } finally {
@@ -158,7 +159,7 @@ const Reservation = ({authState}: ReservationProps) => {
         ]);
 
         if (!allResponse.ok || !userResponse.ok) {
-            throw new Error("Rezervace byla vytvorena, ale nepodarilo se obnovit prehled.");
+            throw new Error("Rezervace byla vytvořena, ale nepodařilo se obnovit přehled.");
         }
 
         const [allData, userData] = await Promise.all([
@@ -176,7 +177,7 @@ const Reservation = ({authState}: ReservationProps) => {
 
         if (!employeeId) {
             setFeedback({
-                message: "Prihlaseny uzivatel nema dostupne employee ID.",
+                message: "Přihlášený uživatel nemá dostupné své zaměstnanecké ID.",
                 variant: "danger"
             });
             return;
@@ -186,7 +187,7 @@ const Reservation = ({authState}: ReservationProps) => {
 
         if (!trimmedRoomName || !formData.bookStart || !formData.bookEnd) {
             setFeedback({
-                message: "Vyplnte mistnost, zacatek i konec rezervace.",
+                message: "Vyplňte název místnosti, začátek i konec rezervace.",
                 variant: "warning"
             });
             return;
@@ -194,7 +195,7 @@ const Reservation = ({authState}: ReservationProps) => {
 
         if (new Date(formData.bookStart) >= new Date(formData.bookEnd)) {
             setFeedback({
-                message: "Konec rezervace musi byt pozdeji nez zacatek.",
+                message: "Konec rezervace musí být později než začátek.",
                 variant: "warning"
             });
             return;
@@ -207,7 +208,7 @@ const Reservation = ({authState}: ReservationProps) => {
 
         if (conflictingReservation) {
             setFeedback({
-                message: `Mistnost ${trimmedRoomName} je v tomto case uz rezervovana.`,
+                message: `Místnost ${trimmedRoomName} je na tuto dobu již rezervována.`,
                 variant: "danger"
             });
             return;
@@ -230,23 +231,84 @@ const Reservation = ({authState}: ReservationProps) => {
 
             if (!response.ok) {
                 const errorText = await response.text();
-                throw new Error(errorText || "Rezervaci se nepodarilo vytvorit.");
+                throw new Error(errorText || "Rezervaci se nepodařilo vytvořit.");
             }
 
             await refreshReservations(employeeId);
             setFormData(initialFormState);
             setFeedback({
-                message: `Rezervace mistnosti ${trimmedRoomName} byla potvrzena.`,
+                message: `Rezervace místnosti ${trimmedRoomName} byla potvrzena.`,
                 variant: "success"
             });
         } catch (error) {
-            console.error("Chyba pri vytvareni rezervace:", error);
+            console.error("Chyba při vytváření rezervace:", error);
             setFeedback({
-                message: error instanceof Error ? error.message : "Rezervaci se nepodarilo vytvorit.",
+                message: error instanceof Error ? error.message : "Rezervaci se nepodařilo vytvořit.",
                 variant: "danger"
             });
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const handleDeleteReservation = async (reservationId: number) => {
+        if (!employeeId) {
+            setFeedback({
+                message: "Přihlášený uživatel nemá dostupné své zaměstnanecké ID.",
+                variant: "danger"
+            });
+            return;
+        }
+
+        setFeedback(null);
+        setDeletingReservationId(reservationId);
+
+        try {
+            const deleteEndpoints = [
+                `${API_BASE_URL}/employee/${employeeId}/reservation/${reservationId}`,
+                `${API_BASE_URL}/reservation/${reservationId}`
+            ];
+
+            let deleteSucceeded = false;
+            let lastErrorMessage = "Rezervaci se nepodařilo odstranit.";
+
+            for (const endpoint of deleteEndpoints) {
+                const response = await fetch(endpoint, {
+                    method: "DELETE"
+                });
+
+                if (response.ok) {
+                    deleteSucceeded = true;
+                    break;
+                }
+
+                const errorText = await response.text();
+                if (errorText) {
+                    lastErrorMessage = errorText;
+                }
+
+                if (response.status !== 404) {
+                    throw new Error(lastErrorMessage);
+                }
+            }
+
+            if (!deleteSucceeded) {
+                throw new Error(lastErrorMessage);
+            }
+
+            await refreshReservations(employeeId);
+            setFeedback({
+                message: "Rezervace byla odstraněna.",
+                variant: "success"
+            });
+        } catch (error) {
+            console.error("Chyba při mazání rezervace:", error);
+            setFeedback({
+                message: error instanceof Error ? error.message : "Rezervaci se nepodařilo odstranit.",
+                variant: "danger"
+            });
+        } finally {
+            setDeletingReservationId(null);
         }
     };
 
@@ -257,28 +319,28 @@ const Reservation = ({authState}: ReservationProps) => {
                     <Col lg={5}>
                         <Card className="reservation-card">
                             <Card.Body className="p-4">
-                                <h1 className="h3 mb-3">Rezervace mistnosti</h1>
+                                <h1 className="h3 mb-3">Rezervace místnosti</h1>
                                 <p className="text-muted mb-4">
-                                    Zadejte nazev mistnosti a cas rezervace. Pokud uz ve stejnem case existuje jina rezervace,
-                                    formular ji odmitne.
+                                    Zadejte název místnosti a čas rezervace. Pokud uz ve stejném čase existuje jiná rezervace,
+                                    formulář ji odmítne.
                                 </p>
 
                                 {feedback && <Alert variant={feedback.variant}>{feedback.message}</Alert>}
 
                                 <Form onSubmit={handleSubmit}>
                                     <Form.Group className="mb-3" controlId="reservationRoomName">
-                                        <Form.Label>Nazev mistnosti</Form.Label>
+                                        <Form.Label>Název místnosti</Form.Label>
                                         <Form.Control
                                             type="text"
                                             name="roomName"
                                             value={formData.roomName}
                                             onChange={handleInputChange}
-                                            placeholder="Napriklad Zasedacka A"
+                                            placeholder="Zadejte název místnosti"
                                         />
                                     </Form.Group>
 
                                     <Form.Group className="mb-3" controlId="reservationBookStart">
-                                        <Form.Label>Zacatek rezervace</Form.Label>
+                                        <Form.Label>Začátek rezervace</Form.Label>
                                         <Form.Control
                                             type="datetime-local"
                                             name="bookStart"
@@ -298,7 +360,7 @@ const Reservation = ({authState}: ReservationProps) => {
                                     </Form.Group>
 
                                     <Button type="submit" className="w-100" disabled={isSubmitting || isLoading}>
-                                        {isSubmitting ? "Odesilam rezervaci..." : "Vytvorit rezervaci"}
+                                        {isSubmitting ? "Odesílám rezervaci..." : "Vytvořit rezervaci"}
                                     </Button>
                                 </Form>
                             </Card.Body>
@@ -311,7 +373,7 @@ const Reservation = ({authState}: ReservationProps) => {
                                 <div className="d-flex justify-content-between align-items-center mb-3">
                                     <div>
                                         <h2 className="h4 mb-1">Moje rezervace</h2>
-                                        <p className="text-muted mb-0">Prehled rezervaci prihlaseneho uzivatele.</p>
+                                        <p className="text-muted mb-0">Přehled rezervací přihlášeného uživatele.</p>
                                     </div>
                                 </div>
 
@@ -321,15 +383,16 @@ const Reservation = ({authState}: ReservationProps) => {
                                     </div>
                                 ) : userReservations.length === 0 ? (
                                     <Alert variant="light" className="mb-0">
-                                        Zatim nemate zadnou rezervaci.
+                                        Zatím nemáte žádnou rezervaci.
                                     </Alert>
                                 ) : (
                                     <Table striped hover responsive>
                                         <thead className="table-primary">
                                         <tr>
-                                            <th>Mistnost</th>
-                                            <th>Zacatek</th>
+                                            <th>Místnost</th>
+                                            <th>Začátek</th>
                                             <th>Konec</th>
+                                            <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -338,6 +401,16 @@ const Reservation = ({authState}: ReservationProps) => {
                                                 <td className="reservation-table-cell">{getReservationRoomName(reservation)}</td>
                                                 <td className="reservation-table-cell">{formatReservationDate(getReservationBookStart(reservation))}</td>
                                                 <td className="reservation-table-cell">{formatReservationDate(getReservationBookEnd(reservation))}</td>
+                                                <td className="reservation-table-cell">
+                                                    <Button
+                                                        variant="danger"
+                                                        size="sm"
+                                                        onClick={() => void handleDeleteReservation(reservation.id)}
+                                                        disabled={deletingReservationId === reservation.id}
+                                                    >
+                                                        {deletingReservationId === reservation.id ? "Odstraňuji..." : "Odstranit"}
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                         </tbody>
