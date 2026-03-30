@@ -1,0 +1,20 @@
+.reservation-page {
+    min-height: calc(100vh - 56px);
+    background:
+        radial-gradient(circle at top right, rgba(13, 110, 253, 0.12), transparent 30%),
+        linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+.reservation-card,
+.reservation-list-card {
+    border: 0;
+    box-shadow: 0 1rem 2.5rem rgba(31, 51, 73, 0.12);
+}
+
+.reservation-list-card .table {
+    margin-bottom: 0;
+}
+
+.reservation-table-cell {
+    vertical-align: middle;
+}

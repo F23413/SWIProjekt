@@ -12,10 +12,14 @@ type LoginProps = {
 };
 
 type LoginResponse = {
+    employeeId?: number;
     email?: string;
+    id?: number;
     role?: UserRole;
     user?: {
         email?: string;
+        employeeId?: number;
+        id?: number;
         role?: UserRole;
     };
 };
@@ -63,6 +67,7 @@ const Login = ({authState, onLogin}: LoginProps) => {
             }
 
             onLogin({
+                employeeId: data.employeeId ?? data.id ?? data.user?.employeeId ?? data.user?.id ?? null,
                 email: data.email ?? data.user?.email ?? formData.email,
                 isLoggedIn: true,
                 role

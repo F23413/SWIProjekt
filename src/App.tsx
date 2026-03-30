@@ -10,6 +10,7 @@ import Login from "./pages/login/Login.tsx";
 import Home from "./pages/home/Home.tsx";
 import {AUTH_STORAGE_KEY, defaultAuthState} from "./auth.ts";
 import type {AuthState} from "./auth.ts";
+import Reservation from "./pages/reservation/Reservation.tsx";
 
 const getStoredAuthState = (): AuthState => {
   const savedAuthState = localStorage.getItem(AUTH_STORAGE_KEY);
@@ -59,6 +60,14 @@ function App() {
                     authState.isLoggedIn && authState.role === "ADM"
                         ? <UpdateUser />
                         : <Navigate to={authState.isLoggedIn ? "/dashboard" : "/login"} replace />
+                }
+            ></Route>
+            <Route
+                path="/reservation"
+                element={
+                    authState.isLoggedIn
+                        ? <Reservation authState={authState} />
+                        : <Navigate to="/login" replace />
                 }
             ></Route>
             <Route path="*" element={<NoMatch/>}></Route>
